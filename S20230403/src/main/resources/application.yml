@@ -1,0 +1,59 @@
+server:
+  port: 8308
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+#file size
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+           
+# oracle connect
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: scott
+    password: tiger
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  
+# jpa setting
+  jpa:
+    hibernate:
+      ddl-auto: none #none create
+    properties:
+      hibernate:
+        default_batch_fetch_size : 500
+      show_sql: true       #sout에 어떤 sql 실행되는거 보여줌
+      format_sql: true
+
+# viewResolover
+  mvc:
+   view:
+    prefix: /WEB-INF/views/
+    suffix: .jsp
+
+# gmail transfer
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yunstar2555@gmail.com
+    password: lxxpenhhjwabnddy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+          
+# MyBatis, classpath = resource폴더임.
+mybatis:
+  config-location: classpath:configuration.xml
+  mapper-locations: classpath:mappers/*.xml
+  
+
+
+
+logging.level:
+  org.hibernate.SQL: debug #logger를 통해 하이버네이트 실행 sql 보여줌
+    

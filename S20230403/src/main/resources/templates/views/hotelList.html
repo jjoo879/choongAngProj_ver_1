@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+<style type="text/css">
+
+	
+	th, td {
+		display: inline-block;
+		margin-right: 30px;
+	}
+</style>	
+	
+	<h1>호텔리스트</h1>
+	<div class="container">
+		<div>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>사업자ID</th>
+						<th>숙소이름</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="accomList : ${accomList}">
+						
+						<!-- <td><a th:href="@{'/accomDetail?biz_id=' + ${accomList.biz_id}}" th:text="${accomList.biz_id}"></a></td> -->
+						<!-- <td><a th:href="@{'/accomDetail?biz_id=' + ${accomList.biz_id} + '&checkIn=' + ${checkIn} + '&checkOut=' + ${checkOut}}" th:text="${accomList.biz_id}"></a></td> -->
+						<td><a th:href="@{'/accomDetail?biz_id=' + ${accomList.biz_id} + '&checkIn=2023-04-17&checkOut=2023-04-19'}" th:text="${accomList.biz_id}"></a></td>
+						<td th:text="${accomList.biz_name }"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</th:block>
+</html>

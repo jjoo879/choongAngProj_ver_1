@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+	<style type="text/css">
+		.carousel, .carousel-inner img {
+			width: 500px;
+			height: 400px;
+			margin-top: 5px;
+			
+		}		
+		
+		.section {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 30px;
+		}
+		
+		.section .aside {
+			margin-left: 3%;
+		}
+		
+		.accomRoomList {
+			display: flex;
+			/* justify-content: center; */
+			margin-right: 5%;
+		}
+		
+		#dateRange {
+			width: 230px;
+			padding-left: 30px;
+		}
+		
+		.calendar{
+			position: relative;
+		}
+		
+		.calendar-icon{
+			position: absolute;
+			left: 5px;
+			top: 2px;
+		}
+		
+		.section-line{
+			width: 100px;
+			height: 1px;
+			background-color: gray;
+		}
+		
+		.flatpickr-day.selected{
+			background-color: rgb(0, 183, 247);
+		}
+		
+		#submitDateBtn{
+			width: 307.875px;
+			height: 38px;
+			border: none;
+			border-radius: 0px 0px 8px 8px;
+			color: rgb(0, 183, 247);
+		}
+		
+		.accordion{
+			margin: auto;
+			justify-content: center;
+			width: 75%;
+		}
+		
+		.accordion-button{
+			display: inline-block;
+			font-size: 14px;
+			width: 120px;
+			text-align: center;
+		}
+		
+		.accordion-line{
+			width: 100%;
+			height: 1px;
+			background: #EAEAEA;
+		}
+		
+		.roomListImg img{
+			width: 370px;
+			height: 220px;
+		}
+		
+		.roomListName {
+			text-align: right;
+		}
+		
+		.roomListPrice {
+			text-align: right;
+		}
+		
+		.roomList {
+			border: 1px solid black;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+	<div class="container">
+		<!-- 메인 사진 -->
+		<div class="section">
+			<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+				<!-- 메인이미지 -->
+				<div class="carousel-inner">
+					<!-- roomImgStat으로 상태값 받아와서 index속성으로 0번째만 active -->
+					<div class="carousel-item active" th:if="${roomImgStat.index == 0}" th:each="roomImg, roomImgStat :  ${roomImg}">
+						<img th:src="@{/upload/{r_img}(r_img=${roomImg.r_img})}" alt="객실사진 준비중" onerror="this.onerror=null; this.src='/img/imageLoding.jpg';">
+					</div>
+					<!-- roomImgStat으로 상태값 받아와서 index속성으로 0번째 이상은 no active -->
+					<div class="carousel-item" th:if="${roomImgStat.index > 0}" th:each="roomImg, roomImgStat :  ${roomImg}">
+						<img th:src="@{/upload/{r_img}(r_img=${roomImg.r_img})}" alt="객실사진 준비중" onerror="this.onerror=null; this.src='/img/imageLoding.jpg';">
+					</div>
+				</div>
+				
+				<button class="carousel-control-prev" type="button"
+					data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button"
+					data-bs-target="#carouselExampleFade" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+			<!-- 메인 정보 및 캘린더 -->
+			<div class="aside">
+				<div class="accomBizname">
+					<h2 th:text="${accomBasicInfo.biz_name}"></h2>
+				</div>
+				<div class="accomAddr">
+					<p th:text="${accomBasicInfo.addr}"></p>
+				</div>
+				<div class="calendar">
+					<input type="text" id="dateRange" placeholder="Select Date Range" readonly>
+					<button id="submitDateBtn">선택완료</button>
+					<span class="calendar-icon">&#128197;</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="accordion" id="accordionExample">
+			<div class="accordion-header">
+				<div class="accordion-line"></div>	
+				<button class="accordion-button collapsed" data-bs-target="#collapseContent"
+					aria-expanded="true">객실예약</button>
+				<button class="accordion-button collapsed"
+					data-bs-target="#collapseContent" aria-expanded="false">기본정보</button>
+				<button class="accordion-button collapsed"
+					data-bs-target="#collapseContent" aria-expanded="false">리뷰</button>
+				<div class="accordion-line"></div>
+			</div>
+			<div class="accordion-item">
+				<div id="collapseContent" class="accordion-collapse collapse show"
+					data-bs-parent="#accordionExample">
+					<div class="accordion-body">
+						<div class="content" id="contentOne">
+							<!-- 객실 리스트 -->
+							<div class="accomRoomList">
+								<div id="roomReservedList">
+								</div>
+							</div>
+						</div>
+						<div class="content" id="contentTwo" style="display: none;">
+							<!-- 객실 정보 -->
+							<div class="accomInfo">
+								<!-- ... -->
+							</div>
+						</div>
+						<div class="content" id="contentThree" style="display: none;">
+							<!-- 객실리뷰 -->
+							<div class="accomReview">
+								<!-- ... -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+	//1. 날짜 아이디 가져오기
+	const dateRange = document.getElementById("dateRange");
+
+	//2. URL에서 checkIn과 checkOut 값을 가져오기
+	const urlParams = new URLSearchParams(window.location.search);
+	let checkIn = urlParams.get("checkIn") ? new Date(urlParams.get("checkIn")) : new Date();
+	let checkOut = urlParams.get("checkOut") ? new Date(urlParams.get("checkOut")) : new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+	//5. 페이지 로드시 플랫피커 onChange가 바로시작안되서 박 표시가 안보임
+	//그래서 따로 호출해줘야됌
+	function defaultInputValue(selectedDates) {
+		if (selectedDates.length === 2) {
+			let nights = (selectedDates[1] - selectedDates[0])
+					/ (1000 * 60 * 60 * 24);
+			let dateStr = flatpickr.formatDate(selectedDates[0], "m.d") + " ~ "
+					+ flatpickr.formatDate(selectedDates[1], "m.d");
+			dateRange.value = dateStr + " · " + nights + "박";
+		}
+	}
+
+	//3. 플랫피커 달력
+	flatpickr(dateRange, {
+		mode : "range",
+		minDate : checkIn,
+		maxDate : new Date().fp_incr(14),
+		dateFormat : "m.d",
+		defaultDate : [ checkIn, checkOut ],
+		clickOpens : false,
+		inline : true,
+		locale : "ko",
+		onChange : function(selectedDates, dateStr) {
+			console.log(selectedDates, dateStr);
+
+			//4. 날짜 범위 선택되면 input에 04.17(월) ~ 04.18(화) 1박 형식 표시
+			if (selectedDates.length === 2) {
+				let nights = (selectedDates[1] - selectedDates[0])
+						/ (1000 * 60 * 60 * 24);
+				dateRange.value = dateStr + " · " + nights + "박";
+			}
+
+		}
+	});
+	
+	//버튼 누를 시 ajax내용 표출에서 페이지로드 시에도 떠야하기 때문에 함수로 빼고
+	//페이지로드 , 버튼 클릭시 두개 loadData로 줄거임
+	function loadData() {
+		//URL값에서 준거 변수에 저장하기
+		const urlParams = new URLSearchParams(window.location.search);
+		let vBiz_id = urlParams.get("biz_id");
+		let vCheckIn = urlParams.get("checkIn");
+		let vCheckOut = urlParams.get("checkOut");
+		
+		//체크인 체크아웃이 URL에 없다면, 기본값 설정
+		if(!vCheckIn || !vCheckOut){
+			vCheckIn = new Date();
+			vCheckOut = new Date(Date.now() + 24 * 60 * 60 * 1000);
+		}
+		
+		//체크인,체크아웃이 둘다 있다면
+	    if (checkIn && checkOut) {
+	    	
+	        $.ajax({
+	            url: "/accomDetail1",
+	            type: "GET",
+	            dataType:'json',
+	            data: {biz_id : vBiz_id, checkIn : vCheckIn, checkOut : vCheckOut},
+	            success: data => {
+	            	let html = "";
+	            	
+	            		html += '<table>'
+	            	data.forEach(item => {
+	            		html += '<tr class="roomList">'
+	            		html += '<td><div class="roomListImg"><img src=/upload/' + item.r_img + ' alt = roomImage></div></td>';
+	            		html += '<td><div class="roomListName">' + item.r_name + '</div></td>';
+	            		html += '<td><div class="roomListPrice">' + item.r_price + '</div></td>';
+	            		html += '</tr>'
+	            	});
+	            		html += '</table>'
+	            	
+	            	$('#roomReservedList').html(html);
+	            }
+	        });
+	    } else {
+	    }
+	};
+	
+	//상세페이지 넘어올 때 페이지 로딩 시 ajax발동
+	$(document).ready(function() {
+	    loadData();
+	}); 
+	
+	//날짜선택후 선택완료 버튼 눌렀을 시 ajax발동
+	$('#submitDateBtn').click(function() {
+		loadData();
+	});
+	
+	
+
+	//6.페이지로드시 onChange 발동안되서 박표시 안되니 내가 만들어서 강제로 호출
+	defaultInputValue([ checkIn, checkOut ]);
+	
+	
+	//8. 토글버튼
+	//객실예약, 숙소정보, 리뷰를 .accordion-button으로 묶어서 SelectorAll로 가져옴
+	const buttons = document.querySelectorAll('.accordion-button');
+	//각각에 대한 내용 div .content SelectorAll로 가져옴
+	const contents = document.querySelectorAll('.content');
+	
+	//버튼들 forEach로 돌리고
+	buttons.forEach((button, index) => {
+		//하나의 버튼 클릭했을때 내부의 함수 실행
+	    button.addEventListener('click', () => {
+	    	contents.forEach((content, contentIndex) => {
+	    		if (contentIndex === index){
+	    			content.style.display = "block";
+	    		} else{
+	    			content.style.display = "none";
+	    		}
+	    	});
+	        
+	    });
+	});
+</script>
+</th:block>
+</html>

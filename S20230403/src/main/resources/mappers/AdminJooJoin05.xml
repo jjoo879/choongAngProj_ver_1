@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.S20230403.JooJoinMapper">
+	
+	<select id="jhuserTotal" resultType="int">
+		select Count(*) from users
+	</select>
+	
+	<select id="jhaccomTotal" resultType="int">
+		select Count(*) from accom
+	</select>
+	
+	<select id="jhqnaTotal" resultType="int">
+		select Count(*) from qna
+	</select>
+	
+	<select id="jhreviewTotal" resultType="int">
+		select Count(*) from review
+	</select>
+	
+	<select id="jheventTotal" resultType="int">
+		select Count(*) from event
+	</select>
+	
+	<select id="jhnoticeTotal" resultType="int">
+		select Count(*) from notice_faq
+	</select>
+	
+	<!-- User 테이블 전체 조회 -->
+	<select id="jhUserlist" resultType="JooJoin" parameterType="JooJoin">
+		select *
+		from(
+			select rownum rn , a.*
+			from(select * from Users order by name) a)
+		where rn BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- Accom 테이블 전체 조회 -->
+	<select id="jhAccomlist" resultType="JooJoin" parameterType="JooJoin">
+		select *
+		from(
+			select rownum rn , a.*
+			from(select * from Accom) a)
+		where rn BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- QnA 테이블 전체 조회 -->
+	<select id="jhQnalist" resultType="JooJoin" parameterType="JooJoin">
+		select *
+		from(
+			select rownum rn , a.*
+			from(select * from Qna) a)
+		where rn BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- Review 테이블 전체 조회 -->
+	<select id="jhReviewlist" resultType="JooJoin" parameterType="JooJoin">
+      select *
+		from(
+			select rownum rn , a.*
+			from(select * from Review) a)
+		where rn BETWEEN #{start} and #{end}
+   </select> 
+	
+	<!-- Event 테이블 전체 조회 -->
+	<select id="jhEventlist" resultType="JooJoin" parameterType="JooJoin">
+      select *
+		from(
+			select rownum rn , a.*
+			from(select * from Event) a)
+		where rn BETWEEN #{start} and #{end}
+   </select> 
+	
+	<!-- Notice 테이블 전체 조회 -->
+	<select id="jhNoticelist" resultType="JooJoin" parameterType="JooJoin">
+      select *
+		from(
+			select rownum rn , a.*
+			from(select * from Notice_faq) a)
+		where rn BETWEEN #{start} and #{end}
+   </select> 
+	
+	
+	<!-- QnA 테이블 한 row 삭제 -->
+	<delete id="adminDeleteQnA" parameterType="java.lang.String">
+		DELETE FROM qna WHERE qna_id = #{qna_id}
+	</delete>
+	
+	<!-- Review 테이블 한 row 삭제 -->
+	<delete id="adminDeleteReview" parameterType="java.lang.String">
+		DELETE FROM review WHERE review_id = #{review_id}
+	</delete>
+	
+	<!-- Event 테이블 한 row 삭제 -->
+	<delete id="adminDeleteEvent" parameterType="java.lang.String">
+		DELETE FROM event WHERE event_id = #{event_id}
+	</delete>
+	
+	<!-- Notice 테이블 한 row 삭제 -->
+	<delete id="adminDeleteNotice" parameterType="java.lang.String">
+		DELETE FROM notice_faq WHERE notice_id = #{notice_id}
+	</delete>
+	
+	
+</mapper>

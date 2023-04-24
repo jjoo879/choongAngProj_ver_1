@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.S20230403.AccomMapper">
+
+	<!-- <select id="adminAccomListAll" resultType="JooJoin">
+      SELECT * FROM accom
+   </select> --> 
+	
+	<update id="adminDeleteAccom" parameterType="JooJoin">
+		UPDATE accom SET accom_avail = '230' WHERE biz_id = #{biz_id}
+	</update>
+	
+</mapper>

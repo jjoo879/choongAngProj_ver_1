@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config
+3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias alias="notice_title"
+			type="com.example.S20230403.model.NoticeFaq" />
+		<typeAlias alias="accom"
+			type="com.example.S20230403.model.Accom" />
+		<typeAlias alias="Accom"
+			type="com.example.S20230403.model.Accom" />
+		<typeAlias alias="JinJoin"
+			type="com.example.S20230403.model.JinJoin" />
+		<typeAlias alias="Room_Img"
+			type="com.example.S20230403.model.Room_Img" />
+		<typeAlias alias="Users"
+			type="com.example.S20230403.model.Users" />
+		<typeAlias alias="accom2" type="com.example.S20230403.model.Accom" />
+		
+		<!-- admin page 쪽 조회용 알리아스명 -->
+		<typeAlias alias="JooJoin" type="com.example.S20230403.model.JooJoin" />
+		
+	</typeAliases>
+	
+</configuration>

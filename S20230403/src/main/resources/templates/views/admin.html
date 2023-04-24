@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+
+<th:block layout:fragment="content">
+<body>
+	<h3 style="padding-left: 230px; padding-bottom: 5px;">관리자 페이지</h3>
+<div class="d-flex align-items-start">
+  <!-- 각 화면의 네비게이션 탭 시작 부분 -->
+  <div 
+  class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
+  style=" width: 150px; padding-left: 10px;">
+  	<!-- 일반 회원 관리탭 -->
+    <button style="height: 65px;" class="nav-link active" id="v-pills-user-tab" data-bs-toggle="pill" data-bs-target="#v-pills-user" 
+    		type="button" role="tab" aria-controls="v-pills-user" aria-selected="true">일반 회원<p> 관리</button>
+    		
+    <!-- 사업자 회원 관리탭 -->
+    <button style="width: 150px; height: 65px;" class="nav-link" id="v-pills-biz-tab" data-bs-toggle="pill" data-bs-target="#v-pills-biz" 
+    		type="button" role="tab" aria-controls="v-pills-biz" aria-selected="false">사업자 <p>회원 관리</button>
+    		
+    <!-- 1대1문의 / 불만 접수 - 문의 답변 관리탭 -->
+    <button class="nav-link" id="v-pills-QnA-tab" data-bs-toggle="pill" data-bs-target="#v-pills-QnA" 
+    		type="button" role="tab" aria-controls="v-pills-QnA" aria-selected="false">QnA 관리</button>
+    		
+    <!-- 리뷰 관리탭 -->
+    <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" 
+    		type="button" role="tab" aria-controls="v-pills-review" aria-selected="false">리뷰 관리</button>
+    		
+    <!-- 이벤트 관리탭 -->
+    <button class="nav-link" id="v-pills-event-tab" data-bs-toggle="pill" data-bs-target="#v-pills-event" 
+    		type="button" role="tab" aria-controls="v-pills-event" aria-selected="false">이벤트 관리</button>
+    		
+    <!-- 공지사항 관리탭 -->
+    <button style="width: 150px; height: 65px;" class="nav-link" id="v-pills-notice-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notice" 
+    		type="button" role="tab" aria-controls="v-pills-notice" aria-selected="false">공지사항 <p>관리</button>
+    		
+  </div>
+  
+  <!-- 각 탭을 클릭하면 나오는 표 시작 부분 -->
+  <div class="tab-content" id="v-pills-tabContent" style="padding-left: 50px; float: right; width: 80%;">
+  	
+    <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+  
+	  <form class="d-flex" action="userSeacrh1" method="get">
+			<div class="d-flex align-items-center">
+				<select name="search"
+					style="width: auto; border-radius: 20px; text-align: center;"
+					class="form-control me-2">
+					<option value="s_user_id">아이디</option>
+					<option value="s_name">이름</option>
+					<option value="s_nickname">닉네임</option>
+					<option value="s_email">이메일</option>
+					<option value="s_phone">전화번호</option>
+				</select> <input
+					style="width: auto; border-radius: 20px; text-align: left;"
+					class="form-control me-2" type="text" placeholder="검색어 입력란"
+					name="keyword" aria-label="Search">
+				<button
+					style="margin-left: 25px; margin-right: 35px; font-weight: bolder; font-size: 20px; border-radius: 215px; width: 100px; border-color: rgb(0, 183, 247); border: 1; color: rgb(0, 183, 247); text-align: center;"
+					class="btn" type="submit">검색</button>
+			</div>
+		</form>
+  
+		<table class="table" id="userTable" style="width: 1800px;">
+      	<!-- User 테이블 헤더와 내용 -->
+      	<tr>
+		<th style="width: 30px;">No.</th><th style="width: 150px;">ID</th><th style="width: 80px;">이름</th><th style="width: 80px;">닉네임</th>
+		<th style="width: 80px;">비밀번호</th><th style="width: 180px;">전화번호</th><th style="width: 80px;">통신사</th>
+		<th style="width: 80px;">성별</th><th style="width: 80px;">회원상태</th><th style="width: 80px;">권한레벨</th><th style="width: 80px;">비활성화</th>
+		</tr>
+		<tr th:each="user,num : ${listUser}">
+		  <td>[[${num.count}]]</td>
+           <td th:text="${user.user_id}"></td><td th:text="${user.name}"></td><td th:text="${user.nickname}"></td>
+           <td th:text="${user.password}"></td><td th:text="${user.phone}"></td><td th:text="${user.telecom}"></td>
+           <td th:text="${user.gender}"></td>
+           <td>
+           		<span th:if= "${user.user_status == 'activated'}">사용중</span>
+           		<span th:if= "${user.user_status == 'deactivated'}">탈퇴</span>
+           </td>
+           <td th:text="${user.auth_level}"></td>
+           <td>
+			   <form action="delUser" method="post">
+		          <input type="hidden" name="user_id" th:value="${user.user_id}">
+		          <button type="submit" th:text="${user.user_status == 'activated' ? '비활성화' : '활성화'}"  style="width: 80px;"></button>
+		        </form>
+           </td>
+         </tr>
+    </table>
+	</div>
+	
+	
+    <div class="tab-pane fade" id="v-pills-biz" role="tabpanel" aria-labelledby="v-pills-biz-tab">
+    	<table class="table" id="bizTable hidden" style="width: 2500px;">
+      	<!-- Accom 테이블 헤더와 내용 -->
+      	<tr>
+		<th>No.</th><th id="long" style="width: 150px;">사업자 등록증 ID</th><th id="long" style="width: 200px;">회원 ID</th><th id="short">사용</th>
+		<th id="short" style="width: 80px;">업종</th><th>업체이름</th><th id="long" style="width: 300px;">주소</th><th id="long" style="width: 160px;">전화번호</th>
+		<th id="short" style="width: 70px;">객실 수</th><th id="long" style="width: 300px;">숙소설명</th><th>위도</th><th>경도</th><th id="short">수영장</th>
+		<th id="short">주차장</th><th id="short">카페</th><th id="short">레스토랑</th><th id="short">편의점</th>
+		<th id="short">사우나</th><th id="short">세탁시설</th><th id="short" style="width: 80px;">헬스시설</th><th>비활성화</th>
+		</tr>
+		<tr th:each="biz,num : ${listAccom}">
+		   <td>[[${num.count}]]</td>
+           <td th:text="${biz.biz_id}"></td>
+           <td th:text="${biz.user_id}"></td>
+           <td>
+           		<span th:if= "${biz.accom_avail == '210'}">가능</span>
+           		<span th:if= "${biz.accom_avail == '230'}">불가능</span>
+           </td>
+           <td>
+           		<span th:if= "${biz.accom_type == '511'}">호텔</span>
+           		<span th:if= "${biz.accom_type == '513'}">호텔(3)</span>
+           		<span th:if= "${biz.accom_type == '514'}">호텔(4)</span>
+           		<span th:if= "${biz.accom_type == '515'}">호텔(5)</span>
+           		<span th:if= "${biz.accom_type == '520'}">모텔</span>
+           		<span th:if= "${biz.accom_type == '530'}">게하</span>
+           		<span th:if= "${biz.accom_type == '540'}">펜션</span>
+           </td>
+           <td th:text="${biz.biz_name}"></td>
+           <td th:text="${biz.addr}"></td>
+           <td th:text="${biz.tel}"></td>
+           <td th:text="${biz.room_count}"></td>
+           <td th:text="${biz.description}"></td>
+           <td th:text="${biz.latitude}"></td>
+           <td th:text="${biz.longitude}"></td>
+           <td th:text="${biz.pool}"></td>
+           <td th:text="${biz.parking}"></td>
+           <td th:text="${biz.cafe}"></td>
+           <td th:text="${biz.restaurant}"></td>
+           <td th:text="${biz.store}"></td>
+           <td th:text="${biz.sauna}"></td>
+           <td th:text="${biz.laundry}"></td>
+           <td th:text="${biz.fitness}"></td>
+           <td>
+				<form action="delAccom" method="post">
+		          <input type="hidden" name="biz_id" th:value="${biz.biz_id}">
+		          <button type="submit" th:text="${biz.accom_avail == '210' ? '비활성화' : '활성화'}"  style="width: 100px;"></button>
+		        </form>
+		   </td>
+         </tr>
+      	</table>
+    </div>
+    
+    
+    <div class="tab-pane fade" id="v-pills-QnA" role="tabpanel" aria-labelledby="v-pills-QnA-tab">
+    	<table class="table" id="QnATable hidden" style="width: 1800px;">
+    	<!-- QnA 테이블 헤더와 내용 -->
+    	<tr>
+		<th style="width: 50px;">No.</th><th style="width: 100px;">타입</th><th style="width: 150px;">회원 ID</th>
+		<th>제목</th><th>내용</th><th>답변</th><th style="width: 80px;">삭제</th>
+		</tr>
+		<tr th:each="qna : ${listQnA}">
+           <td th:text="${qna.qna_id}"></td>
+           <td>
+           		<span th:if= "${qna.qna_type == '430'}">1대1 문의</span>
+           		<span th:if= "${qna.qna_type == '440'}">불만접수</span>
+           </td>
+           <td th:text="${qna.user_id}"></td>
+           <td th:text="${qna.qna_title}"></td>
+           <td th:text="${qna.qna_content}"></td>
+           <td th:text="${qna.reply}"></td>
+           <td>
+				<form action="/delQnA" method="post">
+				    <input type="hidden" name="qna_id" th:value="${qna.qna_id}">
+				    <button type="submit" id="deleteBtn">삭제</button>
+				</form>
+		   </td>
+         </tr>
+    	</table>
+    </div>
+    
+    <div class="tab-pane fade" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab">
+    	<table class="table" id="reviewTable hidden" style="width: 1800px;">
+    	<!-- review 테이블 헤더와 내용 -->
+    	<tr>
+		<th>결제 ID</th><th>종합 별점</th><th>작성 날짜</th><th>내용</th><th>이미지 ID</th><th>이미지</th><th>리뷰 삭제 요청</th><th>삭제</th>
+		</tr>
+		<tr th:each="r : ${listReview}">
+           <td th:text="${r.pay_id}"></td>
+           <td th:text="${r.rating}"></td>
+           <td th:text="${r.review_date}"></td>
+           <td th:text="${r.review_content}"></td>
+           <td th:text="${r.review_img_id}"></td>
+           <td th:text="${r.review_img}"></td>
+           <td th:text="${r.del_request}"></td>
+           <td>
+				<form action="/delReview" method="post">
+				    <input type="hidden" name="pay_id" th:value="${r.pay_id}">
+				    <button type="submit" id="deleteBtn">삭제</button>
+				</form>
+		   </td>
+         </tr>
+    	</table>
+    	
+    </div>
+    
+    <div class="tab-pane fade" id="v-pills-event" role="tabpanel" aria-labelledby="v-pills-event-tab">
+    	<table class="table" id="eventTable hidden" style="width: 1800px;">
+    	<!-- event 테이블 헤더와 내용 -->
+    	<tr>
+		<th>이벤트 ID</th><th>제목</th><th>내용</th><th>이미지</th><th>삭제</th>
+		</tr>
+		<tr th:each="e : ${listEvent}">
+           <td th:text="${e.event_id}"></td>
+           <td th:text="${e.event_title}"></td>
+           <td th:text="${e.event_content}"></td>
+           <td th:text="${e.event_img}"></td>
+           <td>
+				<form action="/delEvent" method="post">
+				    <input type="hidden" name="event_id" th:value="${e.event_id}">
+				    <button type="submit" id="deleteBtn">삭제</button>
+				</form>
+		   </td>
+         </tr>
+    	</table>
+    	
+    </div>
+    
+    <div class="tab-pane fade" id="v-pills-notice" role="tabpanel" aria-labelledby="v-pills-notice-tab">
+    	<table class="table" id="noticeTable hidden" style="width: 1800px;">
+      	<!-- notice 테이블 헤더와 내용 -->
+      	<tr>
+		<th>ID</th><th>타입</th><th>제목</th><th>내용</th><th>삭제</th>
+		</tr>
+		<tr th:each="n : ${listNotice}">
+           <td th:text="${n.notice_id}"></td>
+           <td th:text="${n.notice_type}"></td>
+           <td th:text="${n.notice_title}"></td>
+           <td th:text="${n.notice_content}"></td>
+           <td>
+				<form action="/delNotice" method="post">
+				    <input type="hidden" name="notice_id" th:value="${n.notice_id}">
+				    <button type="submit" id="deleteBtn">삭제</button>
+				</form>
+		   </td>
+         </tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script>
+    /*     	삭제버튼 클릭시 한 번 더 확인하는 ajax 로직 
+     $("#deleteBtn").on("click", function() {
+        var noticeId = $(notice_id).data("id");
+        var confirmMsg = "정말 삭제하시겠습니까?"; // 확인 메시지
+        
+        if (confirm(confirmMsg)) { // 확인 버튼 클릭 시
+        	alert("noticeId->" +noticeId);
+            $.ajax({
+                type: "POST",
+                url: "/admin/delNotice",
+                data: { notice_id: noticeId },
+                success: function(data) {
+                	alert("noticeId success->" +data);
+                	if (data == "success") {
+                    location.reload(); // 삭제 후 페이지 새로고침
+                    $('a[href="#noticeTable"]').tab('show'); // notice 탭에 머물러 있게 함
+                	}
+                },
+                error: function(xhr, status, error) {
+                	alert("noticeId error->" +error);
+                    console.error(error);
+                }
+            });
+        }
+    }); */
+
+    
+      $(document).ready(function() {
+        // 일반 회원 버튼 클릭 시
+        $("#v-pills-user-tab").click(function() {
+          $("#userTable").removeClass("hidden");
+          $("#bizTable").addClass("hidden");
+          $("#QnATable").addClass("hidden");
+          $("#reviewTable").addClass("hidden");
+          $("#eventTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+        });
+
+        // 사업자 회원 버튼 클릭 시
+        $("#v-pills-biz-tab").click(function() {
+          $("#userTable").addClass("hidden");
+          $("#bizTable").removeClass("hidden");
+          $("#QnATable").addClass("hidden");
+          $("#reviewTable").addClass("hidden");
+          $("#eventTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+        });
+
+        // QnA 버튼 클릭 시
+        $("#v-pills-QnA-tab").click(function() {
+          $("#userTable").addClass("hidden");
+          $("#bizTable").addClass("hidden");
+          $("#QnATable").removeClass("hidden");
+          $("#reviewTable").addClass("hidden");
+          $("#eventTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+        });
+
+        // 리뷰 버튼 클릭 시
+        $("#v-pills-review-tab").click(function() {
+          $("#userTable").addClass("hidden");
+          $("#bizTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+          $("#reviewTable").removeClass("hidden");
+          $("#eventTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+        });
+          
+        // 이벤트 버튼 클릭 시
+        $("#v-pills-event-tab").click(function() {
+          $("#userTable").addClass("hidden");
+          $("#bizTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+          $("#reviewTable").addClass("hidden");
+          $("#eventTable").removeClass("hidden");
+          $("#noticeTable").addClass("hidden");
+        });
+        
+        // 공지사항 버튼 클릭 시
+        $("#v-pills-notice-tab").click(function() {
+          $("#userTable").addClass("hidden");
+          $("#bizTable").addClass("hidden");
+          $("#noticeTable").addClass("hidden");
+          $("#reviewTable").addClass("hidden");
+          $("#eventTable").addClass("hidden");
+          $("#noticeTable").removeClass("hidden");
+        });
+      });
+    </script>
+  </body>
+</th:block>
+</html>

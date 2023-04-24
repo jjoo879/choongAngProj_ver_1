@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oracle.S20230403_01.AccomDetailMapper">
+	<!-- 메인에서 모든 숙소에 대한 리스트목록 임시구현(삭제예정) -->
+	<select id="jsAccomList" resultType="Accom">
+		SELECT * FROM accom
+	</select>
+	
+	<!-- 객실리스트 뿌려줄 때 전부다 뿌려주지만, 날짜 걸린건 is_reserved(JinJoin에 조회용 추가)로 1 담아서 view에서 1로 예약불가 버튼 변경 예정
+	room_img는 셀프조인해야함 왜냐면 A호텔에 객실이5개인데 객실사진이 15개면 15개로우가 반환됨
+	그래서 room_img셀프조인하면서 r_img_id를 MIN걸어서 1개만 가져오는걸 써야함 그러면 바로 객실마다 썸네일 뿌려주기 가능 -->
+	<select id="jsAccomDetailList" parameterType="map" resultType="JinJoin">
+		<![CDATA[
+		SELECT a.*, r.*, ri.*,
+		    CASE
+		        WHEN EXISTS (
+		            SELECT 1
+		            FROM reservation resv
+		            JOIN soldout s ON resv.biz_id = s.biz_id AND resv.r_id = s.r_id
+		            WHERE resv.biz_id = r.biz_id AND resv.r_id = r.r_id
+		                AND TO_DATE(#{checkIn}, 'YY/MM/DD') <= TO_DATE(s.resv_date, 'YY/MM/DD')
+		                AND TO_DATE(s.resv_date, 'YY/MM/DD') < TO_DATE(#{checkOut}, 'YY/MM/DD')
+		        ) THEN 1
+		        ELSE 0
+		    END AS is_reserved
+		FROM accom a
+		JOIN room r ON a.biz_id = r.biz_id
+		LEFT JOIN (
+		    SELECT *
+		    FROM room_img ri1
+		    WHERE ri1.r_img_id = (
+		        SELECT MIN(ri2.r_img_id)
+		        FROM room_img ri2
+		        WHERE ri1.biz_id = ri2.biz_id AND ri1.r_id = ri2.r_id
+		    )
+		) ri ON r.biz_id = ri.biz_id AND r.r_id = ri.r_id
+		WHERE a.biz_id = #{biz_id}
+		]]>
+	</select>
+	
+	<!-- 모든객실의 사진들 다 가져와서 메인에서 롤링으로 뿌려줄거 -->
+	<select id="jsRoomImgList" parameterType="java.lang.String" resultType="Room_Img">
+		SELECT *
+		FROM room_img
+		where biz_id = #{biz_id}
+	</select>
+	
+	<select id="jsAccomBasicInfo" parameterType="java.lang.String" resultType="Accom">
+		SELECT *
+		FROM accom
+		WHERE biz_id = #{biz_id}
+	</select>
+</mapper>

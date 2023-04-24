@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+<div class="list_wrap">
+         <div class="top_sort" th:block th:each="">
+            <input type="button" name="btn_pop" value="인기순" th:onclick = "cgProductPop()"> 
+            <input type="button" name="btn_lowPrice" value="낮은가격순" th:onclick = "cgProductLow('${product.accom_type}')"> 
+            <input type="button" name="btn_highPrice" value="높은가격순" th:onclick = "cgProductHigh()"> 
+      
+         </div>
+         <div id = "product_list_area"> 
+            <div class = "title">인기 추천</div>
+            <table>
+               <tr th:each="product : ${products}"  onclick="">
+                  <td th:text='${product.biz_name}'></td>
+                  <td th:text='${product.addr}'></td>
+                  <td th:text='${product.avg_price}'></td>
+                  <td th:text='${product.avg_rating}'></td>
+                  <td th:text='${product.r_img}'></td>
+               </tr>
+            </table>
+         </div>
+
+
+</html>

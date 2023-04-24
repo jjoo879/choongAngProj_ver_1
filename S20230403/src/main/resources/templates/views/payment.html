@@ -1,0 +1,151 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+
+<th:block layout:fragment="content">
+
+	<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+</style>
+
+	<body class="bg-light">
+
+		<div class="container">
+			<main>
+				<div class="row g-5">
+					<div class="col-md-5 col-lg-4 order-md-last" >
+						<h4 class="d-flex justify-content-between align-items-center mb-3">
+							<span class="text-primary">숙박 예약 정보</span>
+						</h4>
+						<ul class="list-group mb-3">
+							<li class="list-group-item d-flex justify-content-between lh-sm">
+								<div>
+									<h6 class="my-0">숙소 이름</h6>
+									
+									<small class="text-muted"><strong >양평 쁘띠 펜션</strong></small>
+								</div> <span class="text-muted">기본 가격 : 30,000 \</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-sm">
+								<div>
+									<h6 class="my-0"><strong >객실 타입/기간</strong></h6>
+									<small class="text-muted">허니문/ 1박</small>
+								</div> <span class="text-muted">추가 요금 : 50,000 \</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-sm">
+								<div>
+									<h6 class="my-0">체크인 </h6>
+									<small class="text-muted">03-20 목 15:00</small>
+								</div> <span class="text-muted"></span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-sm">
+								<div>
+									<h6 class="my-0">체크아웃 </h6>
+									<small class="text-muted">03.31 금 12:00</small>
+								</div> <span class="text-muted">총 1일 </span>
+							</li>
+							<li
+								class="list-group-item d-flex justify-content-between bg-light">
+								<div class="text-success">
+									<h6 class="my-0">적용된 할인</h6>
+									<small>첫 결제 이벤트</small>
+								</div> <span class="text-success">-10,000 \</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">
+								<span>합계 </span> <strong>70,000 \</strong>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-7 col-lg-8" >
+						<h4 class="mb-3"></h4>
+						<form class="needs-validation" novalidate>
+							<div class="row g-3">
+								<div class="col-sm-6">
+									<label for="firstName" class="form-label">성</label> <input
+										type="text" class="form-control" id="firstName" placeholder=""
+										value="" required>
+									<div class="invalid-feedback">성이 들어간는 곳의 정보</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label for="lastName" class="form-label">이름</label> <input
+										type="text" class="form-control" id="lastName" placeholder=""
+										value="" required>
+									<div class="invalid-feedback">이름이 들어가는 곳의 정보</div>
+								</div>
+								<div class="col-12">
+									<label for="address" class="form-label">휴대전화</label> <input
+										type="text" class="form-control" id="address"
+										placeholder="010-0000-0000" required>
+									<div class="invalid-feedback">Please enter your shipping
+										address.</div>
+								</div>
+							</div>
+							<hr class="my-4">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input"
+									id="same-address"> <label class="form-check-label"
+									for="same-address">숙소 이용에 대한 동의</label>
+							</div>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input"
+									id="same-address"> <label class="form-check-label"
+									for="same-address">개인정보 동의</label>
+							</div>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input"
+									id="same-address"> <label class="form-check-label"
+									for="same-address">만 14세 이상 확인</label>
+							</div>
+							<hr>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" id="save-info">
+								<label class="form-check-label" for="save-info"><strong>전체 동의</strong>
+								</label>
+							</div>
+
+							<hr class="my-4">
+
+							<h4 class="mb-3">결제 방식</h4>
+
+							<div class="my-3">
+								<div class="form-check">
+									<input id="credit" name="paymentMethod" type="radio"
+										class="form-check-input" checked required> <label
+										class="form-check-label" for="credit">카드 결제</label>
+								</div>
+								<div class="form-check">
+									<input id="debit" name="paymentMethod" type="radio"
+										class="form-check-input" required> <label
+										class="form-check-label" for="debit">Toss 결제</label>
+								</div>
+								<div class="form-check">
+									<input id="paypal" name="paymentMethod" type="radio"
+										class="form-check-input" required> <label
+										class="form-check-label" for="paypal">카카오 페이</label>
+								</div>
+							</div>
+							<hr class="my-4">
+
+							<button class="w-100 btn btn-primary btn-lg" type="submit">결제 화면으로 이동</button>
+						</form>
+					</div>
+				</div>
+			</main>
+		</div>
+		<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="form-validation.js"></script>
+	</body>
+</html>

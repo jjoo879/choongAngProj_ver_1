@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.S20230403.UsersMapper">
+
+	<!-- <select id="adminUserListAll" resultType="JooJoin">
+      SELECT * FROM users
+   </select> --> 
+	
+	<update id="adminDeleteUser" parameterType="JooJoin">
+		UPDATE users SET user_status = 'deactivated' WHERE user_id = #{user_id}
+	</update>
+	
+	<select id="adminGetUserById" parameterType="JooJoin" resultType="JooJoin">
+		SELECT * FROM users WHERE user_id = #{user_id}
+	</select>
+	
+	<update id="adminRevokeUser" parameterType="JooJoin">
+		UPDATE users SET user_status = 'activated' WHERE user_id = #{user_id}
+	</update>
+	
+	<!-- <delete id="adminDeleteUser" parameterType="java.lang.String">
+		DELETE FROM users WHERE user_id = #{user_id}
+	</delete> -->
+	
+</mapper>

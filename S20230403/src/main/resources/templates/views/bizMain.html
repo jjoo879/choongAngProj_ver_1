@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+	<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.image {
+		position: relative;
+	}
+	
+	.image .text {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		color: #FFF;
+	}
+	
+	img {
+		width: auto;
+		height: 430px;
+		object-fit: contain;
+	}
+	#bizNav {
+		
+		width: 20%;
+		height: 80%;
+		margin: 3px;
+		padding: 2px;
+		}
+	#content {
+		border: solid 1px;
+		float: right;
+		width: 75%;
+		height: 80%;
+		margin: 3px;
+		padding: 2px; 
+		}
+</style>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript">
+	function companyMng(user_id) {
+		var str ="";
+		var str2 = "";
+		console.log("getListDeptRun");
+		$.ajax(
+				{
+					url: "/biz/companyMng",
+					data: {user_id: user_id},
+					dataType: 'json',
+					success: function(accomList) {
+						var accom = JSON.stringify(accomList);
+						${accomList}.each(
+								function(){
+									str2 = "<div value= '"+this.biz_id+"'>"+this.biz_name+"</div>";
+									str 
+								})
+					}
+				})
+	}
+</script>
+</head>
+<body>
+	<div class="bizNav" id="bizNav" style="float: left;">
+	  <div class="accordion-item">
+	    <h2 class="accordion-header" id="headingOne">
+	      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+	        	업체관리
+	      </button>
+	    </h2>
+	    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+	      <div class="accordion-body">
+				<ul class="list-group">
+				  <li class="list-group-item"><input type="button" value="업체관리" id="companyMng" onclick="companyMng(${accom.user_id})"></li>
+				</ul>
+	      </div>
+	    </div>
+	  </div>
+	  
+	  <div class="accordion-item">
+	    <h2 class="accordion-header" id="headingTwo">
+	      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+	        	객실관리
+	      </button>
+	    </h2>
+	    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+	      <div class="accordion-body">
+				<ul class="list-group">
+				  <li class="list-group-item"><a href="">객실 관리</a></li>
+				  <li class="list-group-item"><a href="">객실 비활성화</a></li>
+				</ul>
+	      </div>
+	    </div>
+	  </div>
+	  
+	  <div class="accordion-item">
+	    <h2 class="accordion-header" id="headingThree">
+	      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+	        	리뷰 및 예약관리
+	      </button>
+	    </h2>
+	    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+	      <div class="accordion-body">
+				<ul class="list-group">
+				  <li class="list-group-item"><a href="">리뷰 관리</a></li>
+				  <li class="list-group-item"><a href="">예약 관리</a></li>
+				</ul>
+	      </div>
+	    </div>
+	  </div>
+	  
+	  <div class="accordion-item">
+	    <h2 class="accordion-header" id="headingFour">
+	      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+	        	통계 및 매출 관리
+	      </button>
+	    </h2>
+	    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+	      <div class="accordion-body">
+				<ul class="list-group">
+				  <li class="list-group-item"><a href="">통계 확인</a></li>
+				  <li class="list-group-item"><a href="">매출 확인</a></li>
+				</ul>
+	      </div>
+	    </div>
+	  </div>
+	  
+	  <div class="accordion-item">
+	    <h2 class="accordion-header" id="headingFive">
+	      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+	        	계정관리
+	      </button>
+	    </h2>
+	    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+	      <div class="accordion-body">
+				<ul class="list-group">
+				  <li class="list-group-item"><a href="">개인정보수정</a></li>
+				  <li class="list-group-item"><a href="">계정 양도</a></li>
+				  <li class="list-group-item"><a href="">회원 탈퇴</a></li>
+				</ul>
+				
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 
+	<div id="leftNavi">
+		<a href="companyMng?user_id=hyoung">업체관리</a><p>
+		<a id="roomsMng">객실관리</a><p>
+		<a id="reservMng">예약관리</a><p>
+		<a id="reviewMng">리뷰관리</a><p>
+		<a id="statsChk">통계 및 매출 확인</a><p>
+		<p>
+	</div>
+	 -->
+	<div id="content">
+		<div id = accombox>
+			<div id = biz_name><br>
+			<input type="button" id="accomUpdate" value="수정"><input type="button" id="accomDelete" value="삭제"></div><br>
+		</div>
+	</div>
+</body>
+</html>
