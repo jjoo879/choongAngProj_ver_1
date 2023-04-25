@@ -1,0 +1,20 @@
+server:
+  port: 8306
+# Oracle Connect
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: scottjpa
+    password: tiger
+# Jpa Setting
+  jpa:
+    hibernate:
+      ddl-auto: update  #none create
+    properties: 
+      hibernate:
+      show-sql: true    #system.out에 하이버네이트 실행 SQL
+      format-sql: true
+logging.level:
+  org.hibernate.SQL: debug    #logger를 통해 하이버네이트 실행 SQL
+    
